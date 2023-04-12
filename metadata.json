@@ -1,0 +1,8 @@
+{
+  "name": "Carrier Invitation Email Plugin",
+  "version": "0.3",
+  "module": "plugins.system_reporter_email",
+  "extract": false,
+  "depends_on": ["integrations", "tasks"],
+  "init_after": []
+}
