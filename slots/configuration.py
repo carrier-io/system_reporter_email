@@ -7,7 +7,7 @@ from ..models.integration_pd import IntegrationModel
 
 class Slot:
     integration_name = 'system_reporter_email'
-    section_name = 'systems'
+    section_name = 'system'
 
     @web.slot(f'integrations_{section_name}_content')
     def integration_create_modal_content(self, context, slot, payload):
