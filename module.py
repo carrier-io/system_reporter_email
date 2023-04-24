@@ -32,7 +32,7 @@ class Module(module.ModuleModel):
     def init(self):
         """ Init module """
         log.info('Initializing module')
-        SECTION_NAME = 'systems'
+        SECTION_NAME = 'system'
 
         self.descriptor.init_blueprint()
         self.descriptor.init_slots()

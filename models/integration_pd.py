@@ -24,12 +24,11 @@ class IntegrationModel(BaseModel):
     sender: Optional[str]
     template: Optional[str] = _default_template
 
-    def check_connection(self) -> bool:
-        from tools import session_project
+    def check_connection(self, **kwargs) -> bool:
         try:
             with smtplib.SMTP_SSL(host=self.host, port=self.port) as server:
                 server.ehlo()
-                server.login(self.user, self.passwd.unsecret(session_project.get()))
+                server.login(self.user, self.passwd.unsecret(kwargs.get('project_id')))
             return True
         except Exception as e:
             log.exception(e)
@@ -51,4 +50,13 @@ class IntegrationModel(BaseModel):
 class TaskSettingsModel(IntegrationModel):
     galloper_url: str = '{{secret.galloper_url}}'
     token: str = '{{secret.auth_token}}'
-    project_id: int
+    project_id: Optional[int]
+    passwd: str
+
+    @validator('passwd', pre=True)
+    def unsecret_passwd(cls, value, values: dict):
+        if isinstance(value, SecretField):
+            return value.unsecret(project_id=values['project_id'])
+        elif isinstance(value, dict):
+            return SecretField.parse_obj(value).unsecret(project_id=values.get('project_id'))
+        return value

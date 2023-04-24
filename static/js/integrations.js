@@ -98,7 +98,7 @@ const SystemEmailIntegrationModal = {
                     :error="error.check_connection"
                     :body_data="body_data"
                     v-model:is_fetching="is_fetching"
-                    @handleError="handleError"
+                    @handleError="handleResponseError"
             >
             </test-connection-button>
         </template>
@@ -170,6 +170,14 @@ const SystemEmailIntegrationModal = {
             error_data.forEach(item => {
                 this.error = {[item.loc[0]]: item.msg}
             })
+        },
+        async handleResponseError(response) {
+            try {
+                const error_data = await response.json()
+                this.handleError(error_data)
+            } catch (e) {
+                window.alertMain.add(e, 'danger-overlay')
+            }
         },
         async create() {
             this.is_fetching = true
