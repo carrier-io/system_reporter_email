@@ -130,9 +130,11 @@ const SystemEmailIntegrationModal = {
                 project_id,
                 base64Template: template,
                 status,
-                mode
             } = this
-            return {host, port, user, passwd, sender, description, is_default, project_id, template, status, mode}
+            return {
+                host, port, user, passwd, sender, description, is_default,
+                project_id, template, status, mode: this.$root.mode
+            }
         },
         base64Template() {
             return btoa(this.template)
@@ -339,7 +341,6 @@ const SystemEmailIntegrationModal = {
             pluginName: 'system_reporter_email',
             status: integration_status.pending,
             api_url: V.build_api_url('integrations', 'integration') + '/',
-            mode: V.mode
         })
     }
 }
