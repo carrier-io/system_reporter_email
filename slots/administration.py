@@ -35,12 +35,5 @@ class Slot:
             return self.descriptor.render_template(
                 'administration/content.html',
                 integrations=[*project_integrations, *admin_integrations],
-                integrations_url='/configuration/integrations'
+                integrations_url='/-/configuration/integrations'
             )
-
-    # @web.slot(f'integrations_{section_name}_scripts')
-    # def integration_create_modal_scripts(self, context, slot, payload):
-    #     with context.app.app_context():
-    #         return self.descriptor.render_template(
-    #             'integration/scripts.html',
-    #         )
