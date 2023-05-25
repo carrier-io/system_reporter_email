@@ -13,7 +13,7 @@ const SystemEmailIntegrationModal = {
         @drop.prevent="modal_style = {'height': '100px', 'border': ''}"
 >
     <ModalDialog
-            v-model:description="description"
+            v-model:name="config.name"
             v-model:is_default="is_default"
             @update="update"
             @create="create"
@@ -125,14 +125,14 @@ const SystemEmailIntegrationModal = {
                 user,
                 passwd,
                 sender,
-                description,
+                config,
                 is_default,
                 project_id,
                 base64Template: template,
                 status,
             } = this
             return {
-                host, port, user, passwd, sender, description, is_default,
+                host, port, user, passwd, sender, config, is_default,
                 project_id, template, status, mode: this.$root.mode
             }
         },
@@ -156,17 +156,17 @@ const SystemEmailIntegrationModal = {
             })
         },
         handleEdit(data) {
-            const {description, is_default, id, settings} = data
-            this.load({...settings, description, is_default, id})
+            const {config, is_default, id, settings} = data
+            this.load({...settings, config, is_default, id})
             this.modal.modal('show')
         },
         handleDelete(id) {
             this.load({id})
             this.delete()
         },
-        handleSetDefault(id) {
+        handleSetDefault(id, local=true) {
             this.load({id})
-            this.set_default()
+            this.set_default(local)
         },
         handleError(error_data) {
             error_data.forEach(item => {
@@ -238,7 +238,7 @@ const SystemEmailIntegrationModal = {
         async delete() {
             this.is_fetching = true
             try {
-                const resp = await fetch(this.api_url + this.id, {
+                const resp = await fetch(this.api_url + this.project_id + '/' + this.id,  {
                     method: 'DELETE',
                 })
                 if (resp.ok) {
@@ -265,11 +265,13 @@ const SystemEmailIntegrationModal = {
                 this.is_fetching = false
             }
         },
-        async set_default() {
+        async set_default(local) {
             this.is_fetching = true
             try {
                 const resp = await fetch(this.api_url + this.id, {
                     method: 'PATCH',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({local})
                 })
                 if (resp.ok) {
                     this.$emit('update', {...this.$data, section_name: this.section_name})
@@ -331,7 +333,7 @@ const SystemEmailIntegrationModal = {
                 from_secrets: false
             },
             sender: '',
-            description: '',
+            config: {},
             is_default: false,
             is_fetching: false,
             error: {},
