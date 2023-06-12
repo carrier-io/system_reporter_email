@@ -12,7 +12,6 @@
                         custom_data.invitation_integration = null
                         $nextTick(() => window.$('.selectpicker').selectpicker('refresh'))
                     }"
-
             >
             <span class="custom-toggle_slider round"></span>
         </label>
@@ -22,16 +21,13 @@
 
 <div class="row form-group">
     <div class="collapse flex-grow-1" id="{{ integration_collapse_id }}">
-        <div class="mr-2">
-            <h9>Select Email Service</h9>
-            <p>
-                <h13>Or create one in <a
-                        href="{{ integrations_url }}/#{{ integration_modal_id }}">integration
-                    section</a></h13>
+        <div>
+            <p class="font-h6 mb-1">Select Email Service <br>or create one in
+                <a href="{{ integrations_url }}/#{{ integration_modal_id }}">integration section</a>
             </p>
         </div>
-        <div>
-            <select class="selectpicker w-100-imp" data-style="btn-secondary"
+        <div class="d-flex">
+            <select class="selectpicker bootstrap-select__sm bootstrap-select__b" data-style="btn-secondary"
 {#            @change="e => window.console.log('WOW', e.target.value)"#}
                     v-model="custom_data.invitation_integration"
             >
