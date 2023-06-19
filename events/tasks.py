@@ -30,6 +30,7 @@ class Event:
         if not payload['task_id']:
             context.rpc_manager.call.integrations_update_attrs(
                 integration_id=payload['id'],
+                project_id=payload["project_id"],
                 update_dict={'status': 'pending'},
                 return_result=False
             )
@@ -47,6 +48,7 @@ class Event:
                 # log.info('reporter task id %s', email_task.task_id)
                 updated_data = context.rpc_manager.call.integrations_update_attrs(
                     integration_id=payload['id'],
+                    project_id=payload["project_id"],
                     update_dict={'status': 'success', 'task_id': email_task.task_id},
                     return_result=True
                 )
@@ -57,6 +59,7 @@ class Event:
             except Exception as e:
                 updated_data = context.rpc_manager.call.integrations_update_attrs(
                     integration_id=payload['id'],
+                    project_id=payload["project_id"],
                     update_dict={'status': str(e)},
                     return_result=True
                 )
